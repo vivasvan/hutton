@@ -1,5 +1,6 @@
 module Ex7 where
 import           Prelude
+import           Data.Char
 
 --1
 comprehension :: [a] -> (a -> Bool) -> (a -> b) -> [b]
@@ -49,8 +50,28 @@ b *+ a = a + (10 ^ log10 a) * b
 dec2int [] = 0
 dec2int l  = foldl (*+) 0 l
 
+-- 5
 curry' :: ((a, b) -> c) -> a -> b -> c
 curry' f x y = f (x, y)
 
 uncurry' :: (a -> b -> c) -> (a, b) -> c
 uncurry' f (x, y) = f x y
+--6
+
+unfold :: (t -> Bool) -> (t -> a) -> (t -> t) -> t -> [a]
+unfold p h t x | p x       = []
+               | otherwise = h x : unfold p h t (t x)
+
+type Bit = Int
+
+chop8 :: [Bit] -> [[Bit]]
+chop8 = unfold (== []) (take 8) (drop 8)
+
+map'' :: (a -> b) -> [a] -> [b]
+map'' f = unfold null (f . head) (drop 1)
+
+never :: a -> Bool
+never = const False
+
+iterate' :: (a -> a) -> a -> [a]
+iterate' = unfold (const False) id
