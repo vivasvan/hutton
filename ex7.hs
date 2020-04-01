@@ -75,3 +75,23 @@ never = const False
 
 iterate' :: (a -> a) -> a -> [a]
 iterate' = unfold (const False) id
+
+
+--9 
+
+
+
+altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
+altMap f g (x : xs) = f x : (altMap g f xs)
+altMap _ _ []       = []
+
+-- 10
+
+luhnDouble :: Int -> Int
+luhnDouble n | 2 * n > 9 = 2 * n - 9
+             | otherwise = 2 * n
+
+
+l = luhnDouble
+luhn :: [Int] -> Bool
+luhn ls = sum (altMap l id ls) `rem` 10 == 0
