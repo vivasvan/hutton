@@ -35,4 +35,18 @@ balance (t : ts) = do
     BinaryTreeNode t (balance m) (balance n)
 balance [] = error "empty input array"
 
+--5
 
+data Expr = Val Int | Add Expr Expr
+folde :: (Int -> a) -> (a -> a -> a) -> Expr -> a
+folde f _ (Val x  ) = f x
+folde f g (Add a b) = g (folde f g a) (folde f g b)
+
+--6
+eval :: Expr -> Int
+
+eval = folde id (+)
+
+
+--7
+-- instance Eq a => Eq (Maybe a) where
